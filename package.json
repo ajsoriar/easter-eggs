@@ -1,0 +1,33 @@
+{
+  "name": "easter-eggs",
+  "version": "1.0.0",
+  "description": "Javascript activity indicator",
+  "main": "dist/easter-eggs.min.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/ajsoriar/easter-eggs.git",
+  "keywords": [
+    "easter-eggs",
+    "konamy-code",
+    "konamy code"
+  ],
+  "author": "Andres J. Soria R. <<ajsoriar@gmail.com>>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajsoriar/easter-eggs/issues"
+  },
+  "homepage": "https://github.com/ajsoriar/easter-eggs#readme",
+  "devDependencies": {
+    "grunt": "~0.4",
+    "grunt-cleanempty": "^1.0.3",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-uglify": "~0.2.2"
+  }
+}
