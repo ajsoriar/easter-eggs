@@ -28,7 +28,6 @@ In your javascript code this way:
 ```javascript
 EasterEggs.addSequence(null,[51,50,49],function(){
     console.log("MATCH!!! 3,2,1");
-    log("MATCH!!! 3,2,1");
 })
 ```
 
