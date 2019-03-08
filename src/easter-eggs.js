@@ -19,7 +19,8 @@
             arrOfKeys = [],
             elKey = null,
             elHistory = null,
-            MAX_MEMORY = 10;
+            MAX_MEMORY = 10,
+            onKeyDownFunction = null;
 
         var sequences = [{
                 id: "konamy-code",
@@ -82,7 +83,8 @@
             if ( PAINT_KEY) paintKey( ev );
             if ( PAINT_HISTORY ) paintHistory();
             keyCounter++;
-            checkMatch();
+            var match = checkMatch(); // 0 or 1 is returned
+            if (onKeyDownFunction != null) onKeyDownFunction(match);
         };
 
         var addSequence = function( id, arr, callback ) {
@@ -191,7 +193,16 @@
             },
             paintKey: function(val){
                 if( val === 0 ) PAINT_KEY = false; else PAINT_KEY = true;
-            } 
+            },
+            hide: function(){
+            
+            },
+            show: function(){
+            
+            },
+            onKeyDown: function(fn){
+                onKeyDownFunction = fn;
+            }
         };  
 
     })();
@@ -199,9 +210,10 @@
     window.addEventListener('keydown',function(e){
         window.EasterEggs.addKey(e);
     });
-    window.addEventListener('keydown',function(e){
-        console.log("-!-");
-    });
+    //window.addEventListener('keydown',function(e){
+    //    console.log("-!-");
+    //});
+    
 }());
 
 /*
