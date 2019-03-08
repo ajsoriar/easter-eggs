@@ -217,12 +217,22 @@
 }());
 
 /*
-    // Configuration example
+    // Configuration example:
 
-    EasterEggs.printList();
+    EasterEggs.show();
 
     EasterEggs.addSequence(null,[49,50],function(){
         console.log("MATCH!!! 1,2");
+    })
+    
+    // More options:
+    
+    EasterEggs.printList();
+    
+    EasterEggs.hide();
+    
+    EasterEggs.onKeyDown(function( match ){
+        if ( match ) console.log("YES!") else console.log("NO!") ;
     })
 */
 
