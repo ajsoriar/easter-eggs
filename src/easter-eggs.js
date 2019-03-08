@@ -98,7 +98,7 @@
 
         var paintKey = function( k ) {
             //if (!elKey) createKeyDomEl();
-            var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'
+            var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown; z-index: 99998;">'
             + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 11px;">'+ k.code +'</div>'
             + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #FFEB3B">'+ k.key +'</div>'
             + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #CDDC39">'+ k.keyCode +'</div>'
@@ -110,7 +110,7 @@
             //if (!elHistory) createKeyDomEl();
             var codes = '';
             for( var i=0; i< arrOfKeys.length; i++) { codes += arrOfKeys[i]+ "," };
-            var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'
+            var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown; z-index: 99998;">'
             + codes + '</div>';
             elHistory.innerHTML = str; 
         };
