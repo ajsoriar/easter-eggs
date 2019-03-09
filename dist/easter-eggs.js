@@ -19,7 +19,8 @@
             arrOfKeys = [],
             elKey = null,
             elHistory = null,
-            MAX_MEMORY = 10;
+            MAX_MEMORY = 10,
+            onKeyDownFunction = null;
 
         var sequences = [{
                 id: "konamy-code",
@@ -82,7 +83,8 @@
             if ( PAINT_KEY) paintKey( ev );
             if ( PAINT_HISTORY ) paintHistory();
             keyCounter++;
-            checkMatch();
+            var match = checkMatch(); // 0 or 1 is returned
+            if (onKeyDownFunction != null) onKeyDownFunction(match);
         };
 
         var addSequence = function( id, arr, callback ) {
@@ -98,7 +100,7 @@
 
         var paintKey = function( k ) {
             //if (!elKey) createKeyDomEl();
-            var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'
+            var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown; z-index: 99998;">'
             + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 11px;">'+ k.code +'</div>'
             + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #FFEB3B">'+ k.key +'</div>'
             + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #CDDC39">'+ k.keyCode +'</div>'
@@ -110,7 +112,7 @@
             //if (!elHistory) createKeyDomEl();
             var codes = '';
             for( var i=0; i< arrOfKeys.length; i++) { codes += arrOfKeys[i]+ "," };
-            var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'
+            var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown; z-index: 99998;">'
             + codes + '</div>';
             elHistory.innerHTML = str; 
         };
@@ -191,7 +193,16 @@
             },
             paintKey: function(val){
                 if( val === 0 ) PAINT_KEY = false; else PAINT_KEY = true;
-            } 
+            },
+            hide: function(){
+            
+            },
+            show: function(){
+            
+            },
+            onKeyDown: function(fn){
+                onKeyDownFunction = fn;
+            }
         };  
 
     })();
@@ -199,18 +210,29 @@
     window.addEventListener('keydown',function(e){
         window.EasterEggs.addKey(e);
     });
-    window.addEventListener('keydown',function(e){
-        console.log("-!-");
-    });
+    //window.addEventListener('keydown',function(e){
+    //    console.log("-!-");
+    //});
+    
 }());
 
 /*
-    // Configuration example
+    // Configuration example:
 
-    EasterEggs.printList();
+    EasterEggs.show();
 
     EasterEggs.addSequence(null,[49,50],function(){
         console.log("MATCH!!! 1,2");
+    })
+    
+    // More options:
+    
+    EasterEggs.printList();
+    
+    EasterEggs.hide();
+    
+    EasterEggs.onKeyDown(function( match ){
+        if ( match ) console.log("YES!") else console.log("NO!") ;
     })
 */
 

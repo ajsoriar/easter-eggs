@@ -6,8 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>easter-eggs</title>
     <script src="../src/easter-eggs.js"></script>
+    <script>
+        EasterEggs.show();
+
+        EasterEggs.addSequence(null,[49,50],function(){ // 1, 2
+            console.log("MATCH!!! 1,2");
+            document.getElementById("result").innerHTML = "<b>Match found!</b>"
+        })
+
+        EasterEggs.printList();
+
+        EasterEggs.onKeyDown(function( match ){
+            if ( match ) console.log("YES!"); else console.log("NO!");
+        })
+
+    </script>
 </head>
 <body>
-Just type!
+    Just type <b>1</b> and <b>2</b> ...
+    <div id="result"></div>
 </body>
 </html>
