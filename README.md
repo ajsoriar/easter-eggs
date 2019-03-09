@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/easter-eggs.svg)](https://badge.fury.io/js/easter-eggs)
 
-Small and simple utility library to draw lines just using javascript and HTML Document Object Model.
+A simple script for adding the Konami Code easter egg to your site. Configurable to add your own patterns and callback functions in the case of match.
 
 ![easter-eggs demo image](./demo/easter-eggs.gif?raw=true "easter-eggs demo image")
 

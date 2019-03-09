@@ -1,7 +1,7 @@
 /**
  * easter-eggs
- * Javascript activity indicator
- * @version v1.0.0 - 2019-03-06
+ * A simple script for adding the Konami Code easter egg to your site. Configurable to add your own patterns and callback functions in the case of match.
+ * @version v1.1.0 - 2019-03-09
  * @link https://github.com/ajsoriar/easter-eggs
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT

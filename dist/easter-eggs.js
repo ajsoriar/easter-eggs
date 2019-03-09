@@ -1,7 +1,7 @@
 /**
  * easter-eggs
- * Javascript activity indicator
- * @version v1.0.0 - 2019-03-06
+ * A simple script for adding the Konami Code easter egg to your site. Configurable to add your own patterns and callback functions in the case of match.
+ * @version v1.1.0 - 2019-03-09
  * @link https://github.com/ajsoriar/easter-eggs
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -11,27 +11,28 @@
     
     window.EasterEggs = (function(){
 
-        'use-strict'
+        'use-strict';
 
-        var PAINT_KEY = true,
-            PAINT_HISTORY = true,
-            keyCounter = 0,
+        var PAINT_KEY = false, //true,
+            PAINT_HISTORY = false, //true,
+            //keyCounter = 0,
             arrOfKeys = [],
             elKey = null,
             elHistory = null,
             MAX_MEMORY = 10,
-            onKeyDownFunction = null;
+            onKeyDownFunction = null,
+            NO_KEY = {code:"-", key: "-", keyCode: "-"};
 
         var sequences = [{
                 id: "konamy-code",
                 //sec: [38, 38, 40, 40, 37, 39, 37, 39, 'a', 'b'],
                 sec: [38, 38, 40, 40, 37, 39, 37, 39, 65, 66],
-                callback: function() { console.log( "Konamy Code!") }
+                callback: function() { console.log( "Konamy Code!"); }
             },
             {
                 id: "andres",
                 sec: [65,74,83,82],
-                callback: function() { console.log( "andres!") }
+                callback: function() { console.log( "andres!"); }
             }
             //  Add more combinations here using EasterEggs.addSequence() function.
         ];
@@ -44,7 +45,7 @@
                 lon = sequences.length,
                 lon2,
                 match=false,
-                matchCallback = function(){ console.log("?") },
+                matchCallback = function(){ console.log("?"); },
                 okCont,
                 p_arr_k,
                 p_arr_sec;
@@ -71,7 +72,7 @@
             return 0;
         };
 
-        var addKey = function( ev ) {
+        var pressKey = function( ev ) {
             if ( arrOfKeys.length <= MAX_MEMORY ){
                 arrOfKeys.push( ev.keyCode );
             } else { // move all
@@ -80,9 +81,9 @@
                 } 
                 arrOfKeys[MAX_MEMORY] = ev.keyCode;
             }
-            if ( PAINT_KEY) paintKey( ev );
-            if ( PAINT_HISTORY ) paintHistory();
-            keyCounter++;
+            paintKey( ev );
+            paintHistory();
+            //keyCounter++;
             var match = checkMatch(); // 0 or 1 is returned
             if (onKeyDownFunction != null) onKeyDownFunction(match);
         };
@@ -90,7 +91,7 @@
         var addSequence = function( id, arr, callback ) {
             if ( id === null) id = Date.now();
             if ( arr === null) arr = [];
-            if ( callback === null) callback = function(){console.log("!!!");}
+            if ( callback === null) callback = function(){console.log("!!!");};
             sequences.push({
                 id: id,
                 sec: arr,
@@ -99,21 +100,21 @@
         };
 
         var paintKey = function( k ) {
-            //if (!elKey) createKeyDomEl();
-            var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown; z-index: 99998;">'
-            + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 11px;">'+ k.code +'</div>'
-            + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #FFEB3B">'+ k.key +'</div>'
-            + '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #CDDC39">'+ k.keyCode +'</div>'
-            + '</div>';
+            if ( !PAINT_KEY ) return;
+            var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'+
+            '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 11px;">'+ k.code +'</div>'+
+            '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #FFEB3B">'+ k.key +'</div>'+
+            '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #CDDC39">'+ k.keyCode +'</div>'+
+            '</div>';
             elKey.innerHTML = str; //k.code +" "+ k.key;
         };
 
         var paintHistory = function( k ) {
-            //if (!elHistory) createKeyDomEl();
+            if ( !PAINT_HISTORY ) return;
             var codes = '';
-            for( var i=0; i< arrOfKeys.length; i++) { codes += arrOfKeys[i]+ "," };
-            var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown; z-index: 99998;">'
-            + codes + '</div>';
+            for( var i=0; i< arrOfKeys.length; i++) { codes += arrOfKeys[i]+ ","; }
+            var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'+
+            codes + '</div>';
             elHistory.innerHTML = str; 
         };
 
@@ -130,27 +131,22 @@
         };
 
         var resetKeyDisplay = function() {
-            paintKey({code:"-", key: "-", keyCode: "-"});
+            paintKey(NO_KEY);
         };
 
-        // var init = function(){
-        //     if (document.body != null) { // <script> alocated in <body>
-        //         createKeyDomEl();
-        //         createHistoryDomEl();
-        //         resetKeyDisplay();
-        //     } else { // <script> allocated in <head> will wait for <body> creation to attach the UI
-        //         console.error("easter-eggs.js was imported in <HEAD>. document.body is null! Let's wait to document creation.");
-        //         window.onload=(function(oldLoad){
-        //           return function(){
-        //             console.log('easter-eggs.js window.onload');
-        //             oldLoad && oldLoad();
-        //             createKeyDomEl();
-        //             createHistoryDomEl();
-        //             resetKeyDisplay();
-        //           }
-        //         })(window.onload)
-        //     }
-        // };
+        var hideEE = function() {
+            PAINT_KEY = false;
+            PAINT_HISTORY = false;
+            elKey.innerHTML = '';
+            elHistory.innerHTML = '';
+        };
+
+        var showEE = function() {
+            PAINT_KEY = true;
+            PAINT_HISTORY = true;
+            if ( elKey ) paintKey(NO_KEY);
+            if ( elHistory ) paintHistory();
+        };
 
         var init = function(){
             console.log('EasterEggs.init()');
@@ -158,8 +154,6 @@
             createHistoryDomEl();
             resetKeyDisplay();
         };
-
-        //init();
 
         if(window.onload) {
             var currentOnLoad = window.onload;
@@ -175,8 +169,8 @@
         return {
             elKey: elKey,
             elHistory: elHistory,
-            addKey: function( ev ) {
-                addKey( ev );
+            pressKey: function( ev ) {
+                pressKey( ev );
             },
             reset: function() {
                 sequences = [];
@@ -195,10 +189,10 @@
                 if( val === 0 ) PAINT_KEY = false; else PAINT_KEY = true;
             },
             hide: function(){
-            
+                hideEE();
             },
             show: function(){
-            
+                showEE();
             },
             onKeyDown: function(fn){
                 onKeyDownFunction = fn;
@@ -208,7 +202,7 @@
     })();
 
     window.addEventListener('keydown',function(e){
-        window.EasterEggs.addKey(e);
+        window.EasterEggs.pressKey(e);
     });
     //window.addEventListener('keydown',function(e){
     //    console.log("-!-");
@@ -232,7 +226,7 @@
     EasterEggs.hide();
     
     EasterEggs.onKeyDown(function( match ){
-        if ( match ) console.log("YES!") else console.log("NO!") ;
+        if ( match ) console.log("YES!"); else console.log("NO!");on
     })
 */
 
