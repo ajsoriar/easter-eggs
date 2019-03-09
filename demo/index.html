@@ -6,24 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>easter-eggs</title>
     <script src="../src/easter-eggs.js"></script>
+
+</head>
+<body>
+    Just type <b>1</b> and <b>2</b> ...
+    <div id="result"></div>
+    <button type="button" onclick="EasterEggs.show()">Show</button>
+    <button type="button" onclick="EasterEggs.hide()">Hide</button>
     <script>
+
+        var el = document.getElementById("result");
         EasterEggs.show();
 
         EasterEggs.addSequence(null,[49,50],function(){ // 1, 2
             console.log("MATCH!!! 1,2");
-            document.getElementById("result").innerHTML = "<b>Match found!</b>"
+            el.innerHTML = "<b>Match found!</b>";
         })
 
         EasterEggs.printList();
 
         EasterEggs.onKeyDown(function( match ){
-            if ( match ) console.log("YES!"); else console.log("NO!");
+            if ( match ) console.log("YES!"); else {
+                console.log("NO!");
+                el.innerHTML = "-";
+            }
         })
 
     </script>
-</head>
-<body>
-    Just type <b>1</b> and <b>2</b> ...
-    <div id="result"></div>
 </body>
 </html>

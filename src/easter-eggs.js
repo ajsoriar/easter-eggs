@@ -13,14 +13,15 @@
 
         'use-strict';
 
-        var PAINT_KEY = true,
-            PAINT_HISTORY = true,
-            keyCounter = 0,
+        var PAINT_KEY = false, //true,
+            PAINT_HISTORY = false, //true,
+            //keyCounter = 0,
             arrOfKeys = [],
             elKey = null,
             elHistory = null,
             MAX_MEMORY = 10,
-            onKeyDownFunction = null;
+            onKeyDownFunction = null,
+            NO_KEY = {code:"-", key: "-", keyCode: "-"};
 
         var sequences = [{
                 id: "konamy-code",
@@ -71,7 +72,7 @@
             return 0;
         };
 
-        var addKey = function( ev ) {
+        var pressKey = function( ev ) {
             if ( arrOfKeys.length <= MAX_MEMORY ){
                 arrOfKeys.push( ev.keyCode );
             } else { // move all
@@ -80,8 +81,8 @@
                 } 
                 arrOfKeys[MAX_MEMORY] = ev.keyCode;
             }
-            if ( PAINT_KEY) paintKey( ev );
-            if ( PAINT_HISTORY ) paintHistory();
+            paintKey( ev );
+            paintHistory();
             //keyCounter++;
             var match = checkMatch(); // 0 or 1 is returned
             if (onKeyDownFunction != null) onKeyDownFunction(match);
@@ -99,6 +100,7 @@
         };
 
         var paintKey = function( k ) {
+            if ( !PAINT_KEY ) return;
             var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'+
             '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 11px;">'+ k.code +'</div>'+
             '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #FFEB3B">'+ k.key +'</div>'+
@@ -108,6 +110,7 @@
         };
 
         var paintHistory = function( k ) {
+            if ( !PAINT_HISTORY ) return;
             var codes = '';
             for( var i=0; i< arrOfKeys.length; i++) { codes += arrOfKeys[i]+ ","; }
             var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'+
@@ -128,7 +131,21 @@
         };
 
         var resetKeyDisplay = function() {
-            paintKey({code:"-", key: "-", keyCode: "-"});
+            paintKey(NO_KEY);
+        };
+
+        var hideEE = function() {
+            PAINT_KEY = false;
+            PAINT_HISTORY = false;
+            elKey.innerHTML = '';
+            elHistory.innerHTML = '';
+        };
+
+        var showEE = function() {
+            PAINT_KEY = true;
+            PAINT_HISTORY = true;
+            if ( elKey ) paintKey(NO_KEY);
+            if ( elHistory ) paintHistory();
         };
 
         var init = function(){
@@ -152,8 +169,8 @@
         return {
             elKey: elKey,
             elHistory: elHistory,
-            addKey: function( ev ) {
-                addKey( ev );
+            pressKey: function( ev ) {
+                pressKey( ev );
             },
             reset: function() {
                 sequences = [];
@@ -172,10 +189,10 @@
                 if( val === 0 ) PAINT_KEY = false; else PAINT_KEY = true;
             },
             hide: function(){
-            
+                hideEE();
             },
             show: function(){
-            
+                showEE();
             },
             onKeyDown: function(fn){
                 onKeyDownFunction = fn;
@@ -185,7 +202,7 @@
     })();
 
     window.addEventListener('keydown',function(e){
-        window.EasterEggs.addKey(e);
+        window.EasterEggs.pressKey(e);
     });
     //window.addEventListener('keydown',function(e){
     //    console.log("-!-");
@@ -209,7 +226,7 @@
     EasterEggs.hide();
     
     EasterEggs.onKeyDown(function( match ){
-        if ( match ) console.log("YES!"); else console.log("NO!");
+        if ( match ) console.log("YES!"); else console.log("NO!");on
     })
 */
 
