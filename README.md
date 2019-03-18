@@ -29,6 +29,8 @@ A simple script for adding the Konami Code easter egg to your site. Configurable
 In your javascript code this way:
 
 ```javascript
+EasterEggs.show();
+
 EasterEggs.addSequence(null,[51,50,49],function(){
     console.log("MATCH!!! 3,2,1");
 })
