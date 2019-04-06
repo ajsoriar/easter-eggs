@@ -1,7 +1,7 @@
 /**
  * easter-eggs
  * A simple script for adding the Konami Code easter egg to your site. Configurable to add your own patterns and callback functions in the case of match.
- * @version v1.1.0 - 2019-03-09
+ * @version v1.2.0 - 2019-04-06
  * @link https://github.com/ajsoriar/easter-eggs
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -101,6 +101,7 @@
 
         var paintKey = function( k ) {
             if ( !PAINT_KEY ) return;
+            if (!elKey) createKeyDomEl();
             var str = '<div style="background-color: #F44336;width: 100px;height: 67px;border-radius: 7px;position: absolute;right: 0;bottom: 0;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'+
             '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 11px;">'+ k.code +'</div>'+
             '<div style="padding-top: 5px;color: white;font-weight: bold;font-size: 14px; color: #FFEB3B">'+ k.key +'</div>'+
@@ -111,6 +112,7 @@
 
         var paintHistory = function( k ) {
             if ( !PAINT_HISTORY ) return;
+            if (!elHistory) createHistoryDomEl();
             var codes = '';
             for( var i=0; i< arrOfKeys.length; i++) { codes += arrOfKeys[i]+ ","; }
             var str = '<div style="background-color: #a9ef58;padding: 3px;border-radius: 7px;position: absolute;right: 0;bottom: 68px;text-align: center; font-family: sans-serif; border: 1px solid saddlebrown;">'+
@@ -119,13 +121,13 @@
         };
 
         var createKeyDomEl = function(){
-            elKey = document.createElement('div');
+            if ( !elKey )elKey = document.createElement('div');
             elKey.setAttribute("id", "ee-key");
             document.body.appendChild(elKey);
         };
 
         var createHistoryDomEl = function(){
-            elHistory = document.createElement('div');
+            if ( !elHistory ) elHistory = document.createElement('div');
             elHistory.setAttribute("id", "ee-history");
             document.body.appendChild(elHistory);
         };
@@ -144,27 +146,33 @@
         var showEE = function() {
             PAINT_KEY = true;
             PAINT_HISTORY = true;
-            if ( elKey ) paintKey(NO_KEY);
-            if ( elHistory ) paintHistory();
+            createKeyDomEl();
+            createHistoryDomEl();
+            resetKeyDisplay();
         };
 
         var init = function(){
             console.log('EasterEggs.init()');
             createKeyDomEl();
             createHistoryDomEl();
+            reset();
             resetKeyDisplay();
         };
 
-        if(window.onload) {
-            var currentOnLoad = window.onload;
-            var newOnLoad = function(ev) {
-                currentOnLoad(ev);
-                init(ev);
-            };
-            window.onload = newOnLoad;
-        } else {
-            window.onload = init;
-        }
+        var reset = function(){
+            sequences = [];
+        };
+
+        // if(window.onload) {
+        //     var currentOnLoad = window.onload;
+        //     var newOnLoad = function(ev) {
+        //         currentOnLoad(ev);
+        //         init(ev);
+        //     };
+        //     window.onload = newOnLoad;
+        // } else {
+        //     window.onload = init;
+        // }
 
         return {
             elKey: elKey,
@@ -173,7 +181,7 @@
                 pressKey( ev );
             },
             reset: function() {
-                sequences = [];
+                reset();
             },
             addSequence: function( id, arr, callback ){
                 addSequence( id, arr, callback );

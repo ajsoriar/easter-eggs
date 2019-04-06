@@ -1,6 +1,6 @@
 {
   "name": "easter-eggs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A simple script for adding the Konami Code easter egg to your site. Configurable to add your own patterns and callback functions in the case of match.",
   "main": "dist/easter-eggs.min.js",
   "directories": {
